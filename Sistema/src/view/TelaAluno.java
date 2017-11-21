@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -342,11 +343,14 @@ public class TelaAluno extends javax.swing.JFrame {
         model.setRowCount(0);
     }
     private void preencherCampos() {
+        try{
         emailAlunoLabel.setText(aluno.getEmail());
         nomeCompletoAlunoLabel.setText(aluno.getNome());
         matriculaAlunoLabel.setText(aluno.getMatricula());
         telefoneAlunoLabel.setText(aluno.getTelefoneCelular());
-
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Erro no Login");
+        }
     }
 
     private void popularRequerimentos() {

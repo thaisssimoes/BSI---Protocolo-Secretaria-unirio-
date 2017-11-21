@@ -5,6 +5,7 @@
  */
 package model.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,10 @@ public class Aluno extends Usuario {
     @Getter
     @Setter
     private String periodo;
+    
+    @Getter
+    @Setter
+    private LocalDate dataIngresso;
 
     public Aluno() {
     }

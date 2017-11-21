@@ -5,6 +5,7 @@
  */
 package model.entity;
 
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,9 @@ public class Tecnico extends Usuario {
     @Getter
     @Setter
     String lotacao;
+    @Getter
+    @Setter
+    LocalDate dataIngresso;
 
     public Tecnico() {
     }
