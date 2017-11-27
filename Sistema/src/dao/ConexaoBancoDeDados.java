@@ -21,6 +21,7 @@ import model.entity.Aluno;
 import model.entity.Professor;
 import model.entity.Tecnico;
 import model.entity.Usuario;
+import model.requerimento.Requerimento;
 
 /**
  *
@@ -28,10 +29,10 @@ import model.entity.Usuario;
  */
 public class ConexaoBancoDeDados {
 
-    static final String JDBC_DRIVER = "org.postgresql.Driver";
-    protected static Connection con = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+    private static final String JDBC_DRIVER = "org.postgresql.Driver";
+    private static Connection con = null;
+    private static PreparedStatement ps = null;
+    private static ResultSet rs = null;
 
     public static void openConnection(String url, String user, String password) throws ClassNotFoundException, SQLException {
 
@@ -52,27 +53,47 @@ public class ConexaoBancoDeDados {
         }
     }
 
-    public ArrayList<Aluno> obterAluno(String cpf, String senha) {
+    public static ArrayList<Aluno> obterAluno(String cpf, String senha) {
         ArrayList<Aluno> lista = new ArrayList<>();
         Aluno aluno = new Aluno();
         try {
 
-            PreparedStatement query = con.prepareStatement("SELECT * FROM USUARIO WHERE CPF= ? AND SENHA= ? ");
+            PreparedStatement query = con.prepareStatement(
+           "SELECT * FROM SGR.USUARIOS U, SGR.ALUNO A, SGR.ENDERECO E "
+                   + "WHERE U.CPF = ? AND SENHA = ? and U.id_endereco = E.id_endereco;"
+            );
             query.setString(1, cpf);
             query.setString(2, senha);
             rs = query.executeQuery();
             while (rs.next()) {
                 aluno.setCpf(rs.getString("cpf"));
+                aluno.setMatricula(rs.getString("matricula"));
+                aluno.setPeriodo(rs.getString("periodo"));
                 aluno.setNome(rs.getString("nome"));
+                aluno.setDataNascimeto(rs.getDate("data_nascimento").toLocalDate());
                 aluno.setSenha(rs.getString("senha"));
                 aluno.setEmail(rs.getString("email"));
-                aluno.setNacionalidade(rs.getString("nacionalidade"));
                 aluno.setEstadoCivil(rs.getString("estado_civil"));
+                aluno.setNacionalidade(rs.getString("nacionalidade"));
                 aluno.setNomeDoPai(rs.getString("nome_pai"));
                 aluno.setNomeDaMae(rs.getString("nome_mae"));
                 aluno.setDeficiencia(rs.getString("deficiencia"));
                 aluno.setSexo(rs.getString("sexo"));
                 aluno.setDataIngresso(rs.getDate("data_ingresso").toLocalDate());
+                aluno.setTelefoneCelular(rs.getString("telefone_celular"));
+                aluno.setTelefoneResidencial(rs.getString("telefone_residencial"));
+                aluno.setEstaTrancado(rs.getBoolean("esta_trancado"));
+                aluno.setQtdeTrancamento(rs.getInt("qtde_trancamento"));
+                aluno.setLogradouro(rs.getString("logradouro"));
+                aluno.setTipoDeEndereco(rs.getString("tipo_endereco"));
+                aluno.setTipoLogradouro(rs.getString("tipo_logradouro"));
+                aluno.setComplemento(rs.getString("complemento"));
+                aluno.setEstado(rs.getString("estado"));
+                aluno.setBairro(rs.getString("bairro"));
+                aluno.setCidade(rs.getString("cidade"));
+                aluno.setCep(rs.getString("cep"));
+                aluno.setPais(rs.getString("pais"));                
+                
                 lista.add(aluno);
             }
         } catch (SQLException ex) {
@@ -80,6 +101,10 @@ public class ConexaoBancoDeDados {
         }
         return lista;
 
+    }
+
+    public static ArrayList<Requerimento> obterRequerimentosPorCPF(String cpf) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public ArrayList<Professor> obterProfessor(String cpf, String senha) {

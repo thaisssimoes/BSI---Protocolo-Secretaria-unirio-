@@ -232,49 +232,51 @@ public class Login extends javax.swing.JFrame {
     private void login_enter(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_login_enter
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String senha;
-            String cpf;
-            String tipoUsuarioString;
-            Aluno aluno = null;
-            Professor professor = null;
-            Tecnico tecnico = null;
-            tipoUsuarioString = String.valueOf(tipoUsuario.getSelectedItem());
-            senha = String.valueOf(campoSenha.getPassword());
-            cpf = campoCPF.getText();
-//            boolean autenticado = Autenticacao.reconhecerUsuario(tipoUsuarioString, cpf, senha);
-//            if (autenticado) {
-            this.setVisible(false);
-            this.dispose();
+            try {
+                String senha;
+                String cpf;
+                String tipoUsuarioString;
 
-            switch (tipoUsuarioString) {
-                case "Aluno": {
-                    try {
+                Aluno aluno = null;
+                Professor professor = null;
+                Tecnico tecnico = null;
+                tipoUsuarioString = String.valueOf(tipoUsuario.getSelectedItem());
+                senha = String.valueOf(campoSenha.getPassword());
+                cpf = campoCPF.getText();
+                // boolean autenticado = Autenticacao.reconhecerUsuario(tipoUsuarioString, cpf, senha);
+//        if (autenticado) {
+                this.setVisible(false);
+                this.dispose();
+
+                switch (tipoUsuarioString) {
+                    case "Aluno":
+
                         aluno = controller.Gerenciador.obterAluno(cpf, senha);
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+
+                        TelaAluno janelaTelaAluno = new TelaAluno(aluno);
+                        janelaTelaAluno.setVisible(true);
+                        break;
+                    case "Professor":
+                        professor = controller.Gerenciador.obterProfessorCPF(cpf, senha);
+                        TelaProfessor janelaTelaProfessor = new TelaProfessor(professor);
+                        janelaTelaProfessor.setVisible(true);
+                        break;
+                    default:
+                        tecnico = controller.Gerenciador.obterTecnico(cpf, senha);
+                        TelaSecretaria janelaTelaTecnico = new TelaSecretaria(tecnico);
+                        janelaTelaTecnico.setVisible(true);
+                        break;
                 }
-                TelaAluno janelaTelaAluno = new TelaAluno(aluno);
-                janelaTelaAluno.setVisible(true);
-                break;
-                case "Professor":
-                    professor = controller.Gerenciador.obterProfessorCPF(cpf, senha);
-                    TelaProfessor janelaTelaProfessor = new TelaProfessor(professor);
-                    janelaTelaProfessor.setVisible(true);
-                    break;
-                default:
-                    tecnico = controller.Gerenciador.obterTecnico(cpf, senha);
-                    TelaSecretaria janelaTelaTecnico = new TelaSecretaria(tecnico);
-                    janelaTelaTecnico.setVisible(true);
-                    break;
-            }
-//            } else {
+//            } 
+//            else {
 //                JOptionPane.showMessageDialog(this, "Erro no Login");
 //            }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
     }//GEN-LAST:event_login_enter
 
     private void campoCPFColocarTexto(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoCPFColocarTexto

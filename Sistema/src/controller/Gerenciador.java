@@ -20,7 +20,7 @@ public class Gerenciador {
     private static final String PROFESSOR = "Professors.xml";
     private static final String TECNICO = "Tecnicos.xml";
     private static final String ALUNO = "Alunos.xml";
-    private static final String URL = "jdbc:postgresql://127.0.0.1:5432/PCS_SGBD";
+    private static final String URL = "jdbc:postgresql://127.0.0.1:5432/SGR";
     private static final String USER = "postgres";
     private static final String PASS = "";
     private static final ConexaoBancoDeDados dbconnection = new ConexaoBancoDeDados();
@@ -30,7 +30,7 @@ public class Gerenciador {
         switch (requerimento.getStatus()) {
             case "TRIAGEM":
                 try {
-                    dbconnection.openConnection(URL, USER, PASS);
+                    ConexaoBancoDeDados.openConnection(URL, USER, PASS);
                     ArrayList<Requerimento> listaInicial = null;
                     ArrayList<Requerimento> listaVazia = new ArrayList<>();
 
@@ -128,15 +128,9 @@ public class Gerenciador {
         alunoObtido = null;
         //ManipuladorXML manipulador = new ManipuladorXML(ALUNO);
         //manipulador.leXML();
-        dbconnection.openConnection(URL, USER, PASS);
-        lista = dbconnection.obterAluno(cpf, senha);
-        dbconnection.closeConnection();
-        for (int i = 0; i < lista.size(); i++) {
-            if ((lista.get(i).getCpf().equals(cpf)) && lista.get(i).getSenha().equals(senha)) {
-                alunoObtido = lista.get(i);
-                return alunoObtido;
-            }
-        }
+        ConexaoBancoDeDados.openConnection(URL, USER, PASS);
+        lista = ConexaoBancoDeDados.obterAluno(cpf, senha);
+        ConexaoBancoDeDados.closeConnection();
         return alunoObtido;
     }
 
@@ -145,19 +139,12 @@ public class Gerenciador {
             ArrayList<Tecnico> lista;
             Tecnico tecnicoObtido;
             tecnicoObtido = null;
-            dbconnection.openConnection(URL, USER, PASS);
+            ConexaoBancoDeDados.openConnection(URL, USER, PASS);
             lista = dbconnection.obterTecnico(cpf, senha);
-            dbconnection.closeConnection();
-            for (int i = 0; i < lista.size(); i++) {
-                if ((lista.get(i).getCpf().equals(cpf)) && lista.get(i).getSenha().equals(senha)) {
-                    tecnicoObtido = lista.get(i);
-                    return tecnicoObtido;
-                }
-            }
+            ConexaoBancoDeDados.closeConnection();
+
             return tecnicoObtido;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -211,9 +198,9 @@ public class Gerenciador {
             ArrayList<Professor> lista;
             Professor professorObtido;
             professorObtido = null;
-            dbconnection.openConnection(URL, USER, PASS);
+            ConexaoBancoDeDados.openConnection(URL, USER, PASS);
             lista = dbconnection.obterProfessor(cpf, senha);
-            dbconnection.closeConnection();
+            ConexaoBancoDeDados.closeConnection();
             for (int i = 0; i < lista.size(); i++) {
                 if ((lista.get(i).getCpf().equals(cpf)) && lista.get(i).getSenha().equals(senha)) {
                     professorObtido = lista.get(i);
@@ -221,9 +208,7 @@ public class Gerenciador {
                 }
             }
             return professorObtido;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -258,17 +243,15 @@ public class Gerenciador {
     }
 
     public static ArrayList<Requerimento> buscarRequerimentoCPF(String cpf) {
-        ManipuladorXML xml = new ManipuladorXML(REQUERIMENTO);
-        xml.leXML();
-        ArrayList<Requerimento> lista = xml.getLista();
         ArrayList<Requerimento> listaRetorno = new ArrayList<>();
-
-        for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getRequerente().getCpf().equals(cpf)) {
-                listaRetorno.add(lista.get(i));
-            }
+        try {
+            ConexaoBancoDeDados.openConnection(URL, USER, PASS);
+            listaRetorno = ConexaoBancoDeDados.obterRequerimentosPorCPF(cpf);
+            ConexaoBancoDeDados.closeConnection();
+            return listaRetorno;
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Gerenciador.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return listaRetorno;
     }
 
     public static ArrayList<Requerimento> buscarRequerimentoRequerenteAluno() {
@@ -392,12 +375,6 @@ public class Gerenciador {
             }
         }
         return listaRetorno;
-    }
-
-    public static ArrayList acessarXML(String tipoUsuario) {
-        ManipuladorXML manipulador = new ManipuladorXML(String.valueOf(tipoUsuario) + "s.xml");
-        manipulador.leXML();
-        return manipulador.getLista();
     }
 
 }

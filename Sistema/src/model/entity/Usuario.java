@@ -5,6 +5,7 @@
  */
 package model.entity;
 
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +26,7 @@ public class Usuario {
     private String nome;
     @Getter
     @Setter
-    private String dataNascimeto;
+    private LocalDate dataNascimeto;
     @Getter
     @Setter
     private String nacionalidade;

@@ -28,8 +28,8 @@ public class DadosCadastraisCompletos extends javax.swing.JFrame {
     public DadosCadastraisCompletos(Aluno aluno) {
         initComponents();
         this.aluno = aluno;
-        emailAluno.setText(aluno.getEmail());
-        nomeAluno.setText(aluno.getNome());
+        this.emailAluno.setText(aluno.getEmail());
+        this.nomeAluno.setText(aluno.getNome());
         this.bairroAluno.setText(aluno.getBairro());
         this.cepAluno.setText(aluno.getCep());
         this.cidadeAluno.setText(aluno.getCidade());
