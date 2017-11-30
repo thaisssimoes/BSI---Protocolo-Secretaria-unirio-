@@ -359,7 +359,7 @@ public class TelaAluno extends javax.swing.JFrame {
         ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarRequerimentoCPF(aluno.getCpf());
         Object rowData[] = new Object[3];
         for (int i = 0; i < requerimentos.size(); i++) {
-            rowData[0] = requerimentos.get(i).getNumeroProtocolo();
+            rowData[0] = requerimentos.get(i).getNumeroRequerimento();
             rowData[1] = requerimentos.get(i).getTipoRequerimento();
             rowData[2] = requerimentos.get(i).getStatus();
             model.addRow(rowData);

@@ -47,9 +47,10 @@ public class Professor extends Usuario {
     public Professor() {
     }
 
-    public Professor(String siape, String regimeTrabalho, String classeDocente, String titulacao, String cargo, String cpf, String senha, String nome, String dataNascimeto, String nacionalidade, String email, String estadoCivil, String sexo, String nomeDaMae, String nomeDoPai, String deficiencia, String tipoDeEndereco, String tipoLogradouro, String logradouro, String complemento, String estado, String telefoneResidencial, String bairro, String cidade, String telefoneCelular, String numero, String cep, String pais) {
+    public Professor(String siape, LocalDate dataIngresso, String regimeTrabalho, String classeDocente, String titulacao, String cargo, String cpf, String senha, String nome, LocalDate dataNascimeto, String nacionalidade, String email, String estadoCivil, String sexo, String nomeDaMae, String nomeDoPai, String deficiencia, String tipoDeEndereco, String tipoLogradouro, String logradouro, String complemento, String estado, String telefoneResidencial, String bairro, String cidade, String telefoneCelular, String numero, String cep, String pais) {
         super(cpf, senha, nome, dataNascimeto, nacionalidade, email, estadoCivil, sexo, nomeDaMae, nomeDoPai, deficiencia, tipoDeEndereco, tipoLogradouro, logradouro, complemento, estado, telefoneResidencial, bairro, cidade, telefoneCelular, numero, cep, pais);
         this.siape = siape;
+        this.dataIngresso = dataIngresso;
         this.regimeTrabalho = regimeTrabalho;
         this.classeDocente = classeDocente;
         this.titulacao = titulacao;

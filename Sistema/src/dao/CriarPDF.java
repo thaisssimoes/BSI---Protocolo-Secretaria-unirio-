@@ -8,7 +8,7 @@ package dao;
 
 /**
  *
- * @author LABCCET
+ * @author RafaelSStavale
  */
 
 import com.itextpdf.text.Anchor;
@@ -47,7 +47,7 @@ public class CriarPDF {
    private static  Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
             Font.BOLD);
     public CriarPDF(Requerimento requerimento){
-    String FILE = "../Relatorios/" + requerimento.getNumeroProtocolo() +".pdf";
+    String FILE = "../Relatorios/" + requerimento.getNumeroRequerimento() +".pdf";
      try {
             Document document = new Document();
             PdfWriter.getInstance(document, new FileOutputStream(FILE));
@@ -66,7 +66,7 @@ public class CriarPDF {
     // Reader
     // under File -> Properties
     private static void addMetaData(Document document, Requerimento requerimento) {
-        document.addTitle(requerimento.getNumeroProtocolo());
+        document.addTitle(requerimento.getNumeroRequerimento());
         
     }
 
@@ -79,8 +79,8 @@ public class CriarPDF {
         img.scaleToFit(600,600);
                 
         Aluno aluno = (Aluno) requerimento.getRequerente();
-        Anchor anchor = new Anchor("Protocolo:" + requerimento.getNumeroProtocolo() + " - " + requerimento.getStatus(), catFont);
-        anchor.setName("Protocolo:" + requerimento.getNumeroProtocolo()+ " - " + requerimento.getStatus());
+        Anchor anchor = new Anchor("Protocolo:" + requerimento.getNumeroRequerimento() + " - " + requerimento.getStatus(), catFont);
+        anchor.setName("Protocolo:" + requerimento.getNumeroRequerimento()+ " - " + requerimento.getStatus());
 
         // Second parameter is the number of the chapter
         Chapter catPart = new Chapter(new Paragraph(anchor), 1);

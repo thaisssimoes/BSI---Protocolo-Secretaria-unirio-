@@ -8,6 +8,7 @@ package view;
 import static controller.Gerenciador.obterAluno;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.time.format.DateTimeFormatter;
 import model.entity.Aluno;
 import model.entity.Usuario;
 
@@ -34,7 +35,7 @@ public class DadosCadastraisCompletos extends javax.swing.JFrame {
         this.cepAluno.setText(aluno.getCep());
         this.cidadeAluno.setText(aluno.getCidade());
         this.complementoAluno.setText(aluno.getComplemento());
-        this.dataNasciAluno.setText(aluno.getDataNascimeto());
+        this.dataNasciAluno.setText(aluno.getDataNascimeto().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
         this.deficienciaAluno.setText(aluno.getDeficiencia());
         this.estadoAluno.setText(aluno.getEstado());
         this.estadoCivilAluno.setText(aluno.getEstadoCivil());

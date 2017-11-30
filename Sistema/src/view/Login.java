@@ -182,7 +182,86 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_campoSenhaActionPerformed
 
     private void botaoLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLoginActionPerformed
-        try {
+
+        String senha;
+        String cpf;
+        String tipoUsuarioString;
+
+        Aluno aluno = null;
+        Professor professor = null;
+        Tecnico tecnico = null;
+        tipoUsuarioString = String.valueOf(tipoUsuario.getSelectedItem());
+        senha = String.valueOf(campoSenha.getPassword());
+        cpf = campoCPF.getText();
+        boolean autenticado = false;
+        if (!autenticado) {
+            switch (tipoUsuarioString) {
+                case "Aluno": {
+                    try {
+                        aluno = controller.Gerenciador.obterAluno(cpf, senha);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (aluno == null) {
+                    JOptionPane.showMessageDialog(this, "Erro no Login");
+                } else {
+                    autenticado = true;
+                    this.setVisible(false);
+                    this.dispose();
+                    TelaAluno janelaTelaAluno = new TelaAluno(aluno);
+                    janelaTelaAluno.setVisible(true);
+                }
+                break;
+                case "Professor": {
+                    try {
+                        professor = controller.Gerenciador.obterProfessorCPFSenha(cpf, senha);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (professor == null) {
+                    JOptionPane.showMessageDialog(this, "Erro no Login");
+                } else {
+                    autenticado = true;
+                    this.setVisible(false);
+                    this.dispose();
+                    TelaProfessor janelaProfessor = new TelaProfessor(professor);
+                    janelaProfessor.setVisible(true);
+                }
+                break;
+                case "Tecnico": {
+                    try {
+                        tecnico = controller.Gerenciador.obterTecnico(cpf, senha);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (tecnico == null) {
+                    JOptionPane.showMessageDialog(this, "Erro no Login");
+                } else {
+                    autenticado = true;
+                    this.setVisible(false);
+                    this.dispose();
+                    TelaSecretaria janelaTelaSecretaria = new TelaSecretaria(tecnico);
+                    janelaTelaSecretaria.setVisible(true);
+                }
+                break;
+            }
+        }
+
+
+    }//GEN-LAST:event_botaoLoginActionPerformed
+
+    private void login_enter(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_login_enter
+
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String senha;
             String cpf;
             String tipoUsuarioString;
@@ -193,88 +272,68 @@ public class Login extends javax.swing.JFrame {
             tipoUsuarioString = String.valueOf(tipoUsuario.getSelectedItem());
             senha = String.valueOf(campoSenha.getPassword());
             cpf = campoCPF.getText();
-            // boolean autenticado = Autenticacao.reconhecerUsuario(tipoUsuarioString, cpf, senha);
-//        if (autenticado) {
-            this.setVisible(false);
-            this.dispose();
+            boolean autenticado = false;
 
-            switch (tipoUsuarioString) {
-                case "Aluno":
-
-                    aluno = controller.Gerenciador.obterAluno(cpf, senha);
-
-                    TelaAluno janelaTelaAluno = new TelaAluno(aluno);
-                    janelaTelaAluno.setVisible(true);
-                    break;
-                case "Professor":
-                    professor = controller.Gerenciador.obterProfessorCPF(cpf, senha);
-                    TelaProfessor janelaTelaProfessor = new TelaProfessor(professor);
-                    janelaTelaProfessor.setVisible(true);
-                    break;
-                default:
-                    tecnico = controller.Gerenciador.obterTecnico(cpf, senha);
-                    TelaSecretaria janelaTelaTecnico = new TelaSecretaria(tecnico);
-                    janelaTelaTecnico.setVisible(true);
-                    break;
-            }
-//            } 
-//            else {
-//                JOptionPane.showMessageDialog(this, "Erro no Login");
-//            }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }//GEN-LAST:event_botaoLoginActionPerformed
-
-    private void login_enter(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_login_enter
-
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            try {
-                String senha;
-                String cpf;
-                String tipoUsuarioString;
-
-                Aluno aluno = null;
-                Professor professor = null;
-                Tecnico tecnico = null;
-                tipoUsuarioString = String.valueOf(tipoUsuario.getSelectedItem());
-                senha = String.valueOf(campoSenha.getPassword());
-                cpf = campoCPF.getText();
-                // boolean autenticado = Autenticacao.reconhecerUsuario(tipoUsuarioString, cpf, senha);
-//        if (autenticado) {
-                this.setVisible(false);
-                this.dispose();
-
+            if (!autenticado) {
                 switch (tipoUsuarioString) {
-                    case "Aluno":
-
-                        aluno = controller.Gerenciador.obterAluno(cpf, senha);
-
+                    case "Aluno": {
+                        try {
+                            aluno = controller.Gerenciador.obterAluno(cpf, senha);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    if (aluno == null) {
+                        JOptionPane.showMessageDialog(this, "Erro no Login");
+                    } else {
+                        autenticado = true;
+                        this.setVisible(false);
+                        this.dispose();
                         TelaAluno janelaTelaAluno = new TelaAluno(aluno);
                         janelaTelaAluno.setVisible(true);
-                        break;
-                    case "Professor":
-                        professor = controller.Gerenciador.obterProfessorCPF(cpf, senha);
-                        TelaProfessor janelaTelaProfessor = new TelaProfessor(professor);
-                        janelaTelaProfessor.setVisible(true);
-                        break;
-                    default:
-                        tecnico = controller.Gerenciador.obterTecnico(cpf, senha);
-                        TelaSecretaria janelaTelaTecnico = new TelaSecretaria(tecnico);
-                        janelaTelaTecnico.setVisible(true);
-                        break;
+                    }
+                    break;
+                    case "Professor": {
+                        try {
+                            professor = controller.Gerenciador.obterProfessorCPFSenha(cpf, senha);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    if (professor == null) {
+                        JOptionPane.showMessageDialog(this, "Erro no Login");
+                    } else {
+                        autenticado = true;
+                        this.setVisible(false);
+                        this.dispose();
+                        TelaProfessor janelaProfessor = new TelaProfessor(professor);
+                        janelaProfessor.setVisible(true);
+                    }
+                    break;
+                    case "Tecnico": {
+                        try {
+                            tecnico = controller.Gerenciador.obterTecnico(cpf, senha);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    if (tecnico == null) {
+                        JOptionPane.showMessageDialog(this, "Erro no Login");
+                    } else {
+                        autenticado = true;
+                        this.setVisible(false);
+                        this.dispose();
+                        TelaSecretaria janelaTelaSecretaria = new TelaSecretaria(tecnico);
+                        janelaTelaSecretaria.setVisible(true);
+                    }
+                    break;
                 }
-//            } 
-//            else {
-//                JOptionPane.showMessageDialog(this, "Erro no Login");
-//            }
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_login_enter

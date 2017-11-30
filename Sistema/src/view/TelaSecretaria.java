@@ -525,7 +525,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarRequerimentoFinalizado();
         Object rowData[] = new Object[4];
         for (int i = 0; i < requerimentos.size(); i++) {
-            rowData[0] = requerimentos.get(i).getNumeroProtocolo();
+            rowData[0] = requerimentos.get(i).getNumeroRequerimento();
             rowData[1] = requerimentos.get(i).requerente.getNome();
             rowData[2] = requerimentos.get(i).getTipoRequerimento();
             rowData[3] = requerimentos.get(i).getStatus();
@@ -538,7 +538,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarTriagem();
         Object rowData[] = new Object[4];
         for (int i = 0; i < requerimentos.size(); i++) {
-            rowData[0] = requerimentos.get(i).getNumeroProtocolo();
+            rowData[0] = requerimentos.get(i).getNumeroRequerimento();
             rowData[1] = requerimentos.get(i).requerente.getNome();
             rowData[2] = requerimentos.get(i).getTipoRequerimento();
             rowData[3] = requerimentos.get(i).getStatus();
@@ -552,7 +552,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarRequerimentoRequerenteAluno();
         Object rowData[] = new Object[4];
         for (int i = 0; i < requerimentos.size(); i++) {
-            rowData[0] = requerimentos.get(i).getNumeroProtocolo();
+            rowData[0] = requerimentos.get(i).getNumeroRequerimento();
             rowData[1] = requerimentos.get(i).requerente.getNome();
             rowData[2] = requerimentos.get(i).getTipoRequerimento();
             rowData[3] = requerimentos.get(i).getStatus();
@@ -566,7 +566,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
         ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarRequerimentoAreaResponsavelTecnico();
         Object rowData[] = new Object[4];
         for (int i = 0; i < requerimentos.size(); i++) {
-            rowData[0] = requerimentos.get(i).getNumeroProtocolo();
+            rowData[0] = requerimentos.get(i).getNumeroRequerimento();
             rowData[1] = requerimentos.get(i).requerente.getNome();
             rowData[2] = requerimentos.get(i).getTipoRequerimento();
             rowData[3] = requerimentos.get(i).getStatus();

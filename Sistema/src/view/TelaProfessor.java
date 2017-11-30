@@ -558,7 +558,7 @@ public class TelaProfessor extends javax.swing.JFrame {
         ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarRequerimentoAreaResponsavelProfessorDesignado(professor.getCpf());
         Object rowData[] = new Object[4];
         for (int i = 0; i < requerimentos.size(); i++) {
-            rowData[0] = requerimentos.get(i).getNumeroProtocolo();
+            rowData[0] = requerimentos.get(i).getNumeroRequerimento();
             rowData[1] = requerimentos.get(i).requerente.getNome();
             rowData[2] = requerimentos.get(i).getTipoRequerimento();
             rowData[3] = requerimentos.get(i).getStatus();
@@ -571,7 +571,7 @@ public class TelaProfessor extends javax.swing.JFrame {
         ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarRequerimentoAreaResponsavelProfessorFinalizado(professor.getCpf());
         Object rowData[] = new Object[4];
         for (int i = 0; i < requerimentos.size(); i++) {
-            rowData[0] = requerimentos.get(i).getNumeroProtocolo();
+            rowData[0] = requerimentos.get(i).getNumeroRequerimento();
             rowData[1] = requerimentos.get(i).requerente.getNome();
             rowData[2] = requerimentos.get(i).getTipoRequerimento();
             rowData[3] = requerimentos.get(i).getStatus();
@@ -584,7 +584,7 @@ public class TelaProfessor extends javax.swing.JFrame {
         ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarRequerimentoAreaResponsavelProfessorDesignadoPendente(professor.getCpf());
         Object rowData[] = new Object[4];
         for (int i = 0; i < requerimentos.size(); i++) {
-            rowData[0] = requerimentos.get(i).getNumeroProtocolo();
+            rowData[0] = requerimentos.get(i).getNumeroRequerimento();
             rowData[1] = requerimentos.get(i).requerente.getNome();
             rowData[2] = requerimentos.get(i).getTipoRequerimento();
             rowData[3] = requerimentos.get(i).getStatus();

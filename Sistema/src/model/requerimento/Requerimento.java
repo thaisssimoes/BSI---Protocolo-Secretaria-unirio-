@@ -12,7 +12,7 @@ public class Requerimento {
 
     @Getter
     @Setter
-    private String numeroProtocolo;
+    private String numeroRequerimento;
     @Getter
     @Setter
     public Usuario requerente;
@@ -49,7 +49,7 @@ public class Requerimento {
             String descricao, String dataCriacao,
             String dataSolucao, String resposta,
             String tipoRequerimento) {
-        this.numeroProtocolo = gerarNumeroProtocolo();
+        this.numeroRequerimento = gerarNumeroProtocolo();
         this.requerente = requerente;
         this.areaResponsavel = areaResponsavel;
         this.status = status;
@@ -65,7 +65,7 @@ public class Requerimento {
             String descricao, String dataCriacao,
             String dataSolucao, String resposta,
             String tipoRequerimento, File anexo, String disciplina) {
-        this.numeroProtocolo = gerarNumeroProtocolo();
+        this.numeroRequerimento = gerarNumeroProtocolo();
         this.requerente = requerente;
         this.areaResponsavel = areaResponsavel;
         this.status = status;
@@ -79,7 +79,7 @@ public class Requerimento {
     }
 
     public Requerimento() {
-        this.numeroProtocolo = gerarNumeroProtocolo();
+        this.numeroRequerimento = gerarNumeroProtocolo();
 
     }
 

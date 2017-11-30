@@ -506,7 +506,7 @@ public class RequerimentoGeralAnexoAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelarBotaoActionPerformed
     
     private void criarRequerimento(Requerimento requerimento) {
-        numeroProtocoloLabel.setText(requerimento.getNumeroProtocolo());
+        numeroProtocoloLabel.setText(requerimento.getNumeroRequerimento());
         requerimento.setDataCriacao(LocalDate.now().toString());
         requerimento.setDescricao(descricaoAreaTexto.getText());
         requerimento.setRequerente(aluno);
@@ -521,13 +521,13 @@ public class RequerimentoGeralAnexoAluno extends javax.swing.JFrame {
         }
         
         if (requerimento.getDisciplina().equals("")) {
-            requerimento.setAreaResponsavel(Gerenciador.criarTecnicoGenerico());
+            //requerimento.setAreaResponsavel(Gerenciador.criarTecnicoGenerico());
 
         } else if(this.getTitle().equals("Cancelamento de matrícula") || this.getTitle().equals("Revisão de prova")) {
-            requerimento.setAreaResponsavel(Gerenciador.obterProfessorCargo(encontrarCargoTipoRequerimento()));
+            //requerimento.setAreaResponsavel(Gerenciador.obterProfessorCargo(encontrarCargoTipoRequerimento()));
         }
         else{
-            requerimento.setAreaResponsavel(controller.Gerenciador.obterProfessorDisciplina(String.valueOf(disciplinaComboBox.getSelectedItem())));
+            //requerimento.setAreaResponsavel(controller.Gerenciador.obterProfessorDisciplina(String.valueOf(disciplinaComboBox.getSelectedItem())));
 
 
         }

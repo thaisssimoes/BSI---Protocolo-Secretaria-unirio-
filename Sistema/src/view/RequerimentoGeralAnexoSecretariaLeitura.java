@@ -456,7 +456,7 @@ public class RequerimentoGeralAnexoSecretariaLeitura extends javax.swing.JFrame 
         dataAberturaLabel.setText(requerimento.getDataCriacao());
         dataFechamentoLabel.setText(requerimento.getDataSolucao());
         statusLabel.setText(requerimento.getStatus());
-        numeroProtocoloLabel.setText(requerimento.getNumeroProtocolo());
+        numeroProtocoloLabel.setText(requerimento.getNumeroRequerimento());
         descricaoAreaTexto.setText(requerimento.getDescricao());
         disciplinaLabel.setText(requerimento.getDisciplina());
         respostaAreaTexto.setText(requerimento.getResposta());
