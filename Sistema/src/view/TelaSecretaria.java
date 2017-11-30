@@ -535,7 +535,7 @@ public class TelaSecretaria extends javax.swing.JFrame {
     private void popularRequerimentosTriagem() {
 
         DefaultTableModel model = (DefaultTableModel) tabelaTriagem.getModel();
-        ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarTriagem();
+        ArrayList<Requerimento> requerimentos = controller.Gerenciador.buscarRequerimentosTriagem();
         Object rowData[] = new Object[4];
         for (int i = 0; i < requerimentos.size(); i++) {
             rowData[0] = requerimentos.get(i).getNumeroRequerimento();
@@ -621,6 +621,5 @@ public class TelaSecretaria extends javax.swing.JFrame {
     private javax.swing.JTable tabelaTriagem;
     private javax.swing.JLabel telefoneCelTecnicoLabel;
     // End of variables declaration//GEN-END:variables
-
-    
+   
 }

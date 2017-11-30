@@ -513,6 +513,7 @@ public class RequerimentoGeralAnexoAluno extends javax.swing.JFrame {
         requerimento.setStatus("TRIAGEM");
         requerimento.setTipoRequerimento(this.getTitle());
         requerimento.setResposta(""); 
+        requerimento.setTipoRequerente("Aluno");
         if(disciplinaComboBox.isVisible()){
            requerimento.setDisciplina(String.valueOf(disciplinaComboBox.getSelectedItem())); 
         }

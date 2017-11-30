@@ -15,6 +15,9 @@ public class Requerimento {
     private String numeroRequerimento;
     @Getter
     @Setter
+    private String tipoRequerente;
+    @Getter
+    @Setter
     public Usuario requerente;
     @Getter
     @Setter
@@ -64,7 +67,7 @@ public class Requerimento {
             Usuario areaResponsavel, String status,
             String descricao, String dataCriacao,
             String dataSolucao, String resposta,
-            String tipoRequerimento, File anexo, String disciplina) {
+            String tipoRequerimento, File anexo, String disciplina, String tipoRequerente) {
         this.numeroRequerimento = gerarNumeroProtocolo();
         this.requerente = requerente;
         this.areaResponsavel = areaResponsavel;
@@ -76,6 +79,7 @@ public class Requerimento {
         this.tipoRequerimento = tipoRequerimento;
         this.anexo = anexo;
         this.disciplina = disciplina;
+        this.tipoRequerente = tipoRequerente;
     }
 
     public Requerimento() {

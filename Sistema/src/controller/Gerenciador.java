@@ -26,8 +26,9 @@ public class Gerenciador {
         switch (requerimento.getStatus()) {
             case "TRIAGEM":
                 try {
+
                     ConexaoBancoDeDados.openConnection(URL, USER, PASS);
-                    ConexaoBancoDeDados.criarNovoRequerimento(requerimento);
+                    ConexaoBancoDeDados.criarNovoRequerimentoAluno(requerimento);
                     ConexaoBancoDeDados.closeConnection();
 
                 } catch (ClassNotFoundException | SQLException ex) {
@@ -36,8 +37,9 @@ public class Gerenciador {
                 break;
             case "DESIGNADO": {
                 try {
+                    String novoStatus = "DESIGNADO";
                     ConexaoBancoDeDados.openConnection(URL, USER, PASS);
-                    ConexaoBancoDeDados.atualizarRequerimento(requerimento);
+                    ConexaoBancoDeDados.atualizarRequerimento(requerimento,novoStatus);
                     ConexaoBancoDeDados.closeConnection();
 
                 } catch (ClassNotFoundException | SQLException ex) {
@@ -48,8 +50,9 @@ public class Gerenciador {
             }
             case "CONCLUIDO": {
                 try {
+                    String novoStatus = "CONCLUIDO";
                     ConexaoBancoDeDados.openConnection(URL, USER, PASS);
-                    ConexaoBancoDeDados.atualizarRequerimento(requerimento);
+                    ConexaoBancoDeDados.atualizarRequerimento(requerimento,novoStatus);
                     ConexaoBancoDeDados.closeConnection();
 
                 } catch (ClassNotFoundException | SQLException ex) {
@@ -59,8 +62,9 @@ public class Gerenciador {
             }
             case "REJEITADO": {
                 try {
+                    String novoStatus = "REJEITADO";
                     ConexaoBancoDeDados.openConnection(URL, USER, PASS);
-                    ConexaoBancoDeDados.atualizarRequerimento(requerimento);
+                    ConexaoBancoDeDados.atualizarRequerimento(requerimento,novoStatus);
                     ConexaoBancoDeDados.closeConnection();
 
                 } catch (ClassNotFoundException | SQLException ex) {
@@ -70,8 +74,9 @@ public class Gerenciador {
             }
             case "PENDENTE": {
                 try {
+                    String novoStatus = "PENDENTE";
                     ConexaoBancoDeDados.openConnection(URL, USER, PASS);
-                    ConexaoBancoDeDados.atualizarRequerimento(requerimento);
+                    ConexaoBancoDeDados.atualizarRequerimento(requerimento, novoStatus);
                     ConexaoBancoDeDados.closeConnection();
 
                 } catch (ClassNotFoundException | SQLException ex) {
@@ -152,18 +157,34 @@ public class Gerenciador {
         }
     }
 
-    public static ArrayList<Requerimento> buscarTriagem() {
-
+    public static ArrayList<Requerimento> buscarRequerimentosTriagem() {
         ArrayList<Requerimento> listaRetorno = new ArrayList<>();
+        try {
+            ConexaoBancoDeDados.openConnection(URL, USER, PASS);
+            listaRetorno = ConexaoBancoDeDados.obterRequerimentosTriagem();
+            ConexaoBancoDeDados.closeConnection();
 
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Gerenciador.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
         return listaRetorno;
     }
 
     public static ArrayList<Requerimento> buscarRequerimentoProtocolo(String numeroProtocolo) {
-
         ArrayList<Requerimento> listaRetorno = new ArrayList<>();
+        try {
+            ConexaoBancoDeDados.openConnection(URL, USER, PASS);
+            listaRetorno = ConexaoBancoDeDados.obterRequerimentoProtocolo(numeroProtocolo);
+            ConexaoBancoDeDados.closeConnection();
 
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Gerenciador.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
         return listaRetorno;
+    
+        
     }
 
     public static ArrayList<Requerimento> buscarRequerimentoCPF(String cpf) {

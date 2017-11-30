@@ -28,6 +28,7 @@ public class RequerimentoGeralAnexoSecretaria extends javax.swing.JFrame {
     Tecnico tecnico;
     Requerimento requerimento;
     Aluno aluno;
+
     public RequerimentoGeralAnexoSecretaria(String cpf, String senha, String titulo) {
         this.setTitle(titulo);
         initComponents();
@@ -38,7 +39,8 @@ public class RequerimentoGeralAnexoSecretaria extends javax.swing.JFrame {
         this.tecnico = tecnico;
         centralizarTela();
     }
-    public RequerimentoGeralAnexoSecretaria(Requerimento requerimento,String titulo){
+
+    public RequerimentoGeralAnexoSecretaria(Requerimento requerimento, String titulo) {
         this.setTitle(titulo);
         initComponents();
         this.requerimento = requerimento;
@@ -47,8 +49,7 @@ public class RequerimentoGeralAnexoSecretaria extends javax.swing.JFrame {
         preencherCampos();
         centralizarTela();
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -457,8 +458,7 @@ public class RequerimentoGeralAnexoSecretaria extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
     private void preencherCampos() {
         emailAlunoLabel.setText(aluno.getEmail());
         nomeCompletoAlunoLabel.setText(aluno.getNome());
@@ -473,31 +473,31 @@ public class RequerimentoGeralAnexoSecretaria extends javax.swing.JFrame {
         respostaAreaTexto.setText(requerimento.getResposta());
         periodoLabel.setText(aluno.getPeriodo());
     }
-    
-      private void preencherTela(){
+
+    private void preencherTela() {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         String titulo = this.getTitle();
         System.out.println(titulo);
         dataFechamentoLabel.setVisible(true);
         dataFechamentoFixo.setVisible(true);
 
-        if(titulo.equals("Realização de segunda chamada")
-            || titulo.equals("Revisão de prova")
-            || titulo.equals("Isenção ou aproveitamento de disciplina")){
+        if (titulo.equals("Realização de segunda chamada")
+                || titulo.equals("Revisão de prova")
+                || titulo.equals("Isenção ou aproveitamento de disciplina")) {
             disciplinaLabelFixo.setVisible(true);
             disciplinaLabel.setVisible(true);
             anexo1.setVisible(true);
             anexo2.setVisible(true);
-        }
-        else{         
+        } else {
             disciplinaLabelFixo.setVisible(false);
             disciplinaLabel.setVisible(false);
             anexo1.setVisible(false);
             anexo2.setVisible(false);
             this.setBounds(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2, 700, 550);
-               
+
         }
     }
+
     private void centralizarTela() {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -517,7 +517,7 @@ public class RequerimentoGeralAnexoSecretaria extends javax.swing.JFrame {
 
     private void rejeitarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rejeitarBotaoActionPerformed
         PopupComentario janelaComentario = new PopupComentario(requerimento, "REJEITADO");
-        janelaComentario.setVisible(true);             
+        janelaComentario.setVisible(true);
         this.setVisible(false);
         this.dispose();;
 
@@ -531,7 +531,6 @@ public class RequerimentoGeralAnexoSecretaria extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceitarBotao;

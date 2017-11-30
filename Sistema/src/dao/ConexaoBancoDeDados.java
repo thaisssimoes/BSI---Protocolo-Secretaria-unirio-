@@ -29,8 +29,6 @@ import model.requerimento.Requerimento;
  * @author RafaelSalazarStavale
  */
 public class ConexaoBancoDeDados {
-    
-    
 
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
     private static Connection con = null;
@@ -105,7 +103,7 @@ public class ConexaoBancoDeDados {
         return professor;
 
     }
-    
+
     public static Aluno obterAluno(String cpf, String senha) {
         Aluno aluno = new Aluno();
         try {
@@ -159,7 +157,7 @@ public class ConexaoBancoDeDados {
         Requerimento requerimento = new Requerimento();
         Usuario usuarioRequerente = new Usuario();
         Usuario usuarioRequerido = new Usuario();
-        
+
         try {
             PreparedStatement query = con.prepareStatement(
                     "SELECT * FROM SGR.REQUERIMENTOS R WHERE R.id_usuario = "
@@ -167,8 +165,8 @@ public class ConexaoBancoDeDados {
             );
             query.setString(1, cpf);
             rs = query.executeQuery();
-            while(rs.next()){
-                
+            while (rs.next()) {
+
                 requerimento.setRequerente(usuarioRequerente);
                 requerimento.setAreaResponsavel(usuarioRequerido);
                 requerimento.setDataCriacao(rs.getString("data_criacao"));
@@ -187,26 +185,26 @@ public class ConexaoBancoDeDados {
         return listaRequerimento;
     }
 
-    public static void criarNovoRequerimento(Requerimento requerimento) {
-
+    public static void criarNovoRequerimentoAluno(Requerimento requerimento) {
         try {
             PreparedStatement query = con.prepareStatement(""
                     + "INSERT INTO sgr.requerimentos("
                     + "id_usuario, numero_requerimento,"
-                    + "status, data_criacao,descricao,tipo_requerimento)"
+                    + "status, data_criacao,descricao,tipo_requerimento,tipo_requerente)"
                     + "VALUES "
                     + "((SELECT id_usuario from SGR.USUARIOS WHERE CPF = ?),"
                     + "?,"
                     + "?,"
                     + "?,"
                     + "?,"
-                    + "?);");
+                    + "?,?);");
             query.setString(1, requerimento.requerente.getCpf());
             query.setString(2, requerimento.getNumeroRequerimento());
             query.setString(3, requerimento.getStatus());
             query.setDate(4, Date.valueOf((requerimento.getDataCriacao())));
             query.setString(5, requerimento.getDescricao());
             query.setString(6, requerimento.getTipoRequerimento());
+            query.setString(7, "Aluno");
             rs = query.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
@@ -214,16 +212,29 @@ public class ConexaoBancoDeDados {
 
     }
 
-    public static void atualizarRequerimento(Requerimento requerimento) {
+    public static void atualizarRequerimento(Requerimento requerimento, String novoStatus) {
+         try {
+            PreparedStatement query = con.prepareStatement(
+            "UPDATE sgr.Requerimentos SET status = ? WHERE numero_requerimento = ?;"
+            );
+            
+            query.setString(1, requerimento.getNumeroRequerimento());
+            query.setString(2, novoStatus);
+            rs = query.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
-    private static Aluno obterUsuarioPorID(int ID){
+
+    private static Aluno obterUsuarioPorID(int ID) {
         Aluno aluno = new Aluno();
         ResultSet resultSet = null;
         try {
             PreparedStatement stmt = con.prepareStatement(
-                    "select * from sgr.usuarios, SGR.ALUNO A, sgr.endereco E"
+                    "select * from sgr.usuarios U, SGR.ALUNO A, sgr.endereco E"
                     + " WHERE A.ID_USUARIO = U.ID_USUARIO AND U.ID_USUARIO = ? AND U.ID_ENDERECO = E.ID_ENDERECO");
+            stmt.setInt(1, ID);
             resultSet = stmt.executeQuery();
             if (resultSet.next()) {
                 aluno.setCpf(resultSet.getString("cpf"));
@@ -255,7 +266,7 @@ public class ConexaoBancoDeDados {
                 aluno.setPais(resultSet.getString("pais"));
                 aluno.setNumero(resultSet.getString("numero"));
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -263,25 +274,17 @@ public class ConexaoBancoDeDados {
     }
 
     public static ArrayList<Requerimento> obterRequerimentoAreaResponsavelProfessorDesignadoPendente(String cpf) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public static ArrayList<Requerimento> obterRequerimentoAreaResponsavelProfessorDesignado(String cpf) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public static ArrayList<Requerimento> obterRequerimentoAreaResponsavelTecnico() {
-         ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
+      ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
         Requerimento requerimento = new Requerimento();
-        
+
         try {
             PreparedStatement query = con.prepareStatement(
                     "SELECT * FROM SGR.REQUERIMENTOS R WHERE R.AREA_RESPONSAVEL = 0;"
             );
-            
+
             rs = query.executeQuery();
-            while(rs.next()){
-                
+            while (rs.next()) {
+
                 requerimento.setRequerente(obterUsuarioPorID(rs.getInt("id_usuario")));
                 requerimento.setDataCriacao(rs.getString("data_criacao"));
                 requerimento.setDataSolucao(rs.getString("data_solucao"));
@@ -297,27 +300,249 @@ public class ConexaoBancoDeDados {
             Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listaRequerimento;
-        
+    }
+
+    public static ArrayList<Requerimento> obterRequerimentoAreaResponsavelProfessorDesignado(String cpf) {
+    ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
+        Requerimento requerimento = new Requerimento();
+
+        try {
+            PreparedStatement query = con.prepareStatement(
+                    "SELECT * FROM SGR.REQUERIMENTOS R WHERE R.AREA_RESPONSAVEL = 0;"
+            );
+
+            rs = query.executeQuery();
+            while (rs.next()) {
+
+                requerimento.setRequerente(obterUsuarioPorID(rs.getInt("id_usuario")));
+                requerimento.setDataCriacao(rs.getString("data_criacao"));
+                requerimento.setDataSolucao(rs.getString("data_solucao"));
+                requerimento.setDescricao(rs.getString("descricao"));
+                requerimento.setNumeroRequerimento(rs.getString("numero_requerimento"));
+                requerimento.setResposta(rs.getString("resposta"));
+                requerimento.setStatus(rs.getString("status"));
+                requerimento.setTipoRequerimento(rs.getString("tipo_requerimento"));
+                listaRequerimento.add(requerimento);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRequerimento;
+    
+    }
+
+    public static ArrayList<Requerimento> obterRequerimentoAreaResponsavelTecnico() {
+        ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
+        Requerimento requerimento = new Requerimento();
+
+        try {
+            PreparedStatement query = con.prepareStatement(
+                    "SELECT * FROM SGR.REQUERIMENTOS R WHERE R.AREA_RESPONSAVEL = 0;"
+            );
+
+            rs = query.executeQuery();
+            while (rs.next()) {
+
+                requerimento.setRequerente(obterUsuarioPorID(rs.getInt("id_usuario")));
+                requerimento.setDataCriacao(rs.getString("data_criacao"));
+                requerimento.setDataSolucao(rs.getString("data_solucao"));
+                requerimento.setDescricao(rs.getString("descricao"));
+                requerimento.setNumeroRequerimento(rs.getString("numero_requerimento"));
+                requerimento.setResposta(rs.getString("resposta"));
+                requerimento.setStatus(rs.getString("status"));
+                requerimento.setTipoRequerimento(rs.getString("tipo_requerimento"));
+                listaRequerimento.add(requerimento);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRequerimento;
+
     }
 
     public static ArrayList<Requerimento> obterRequerimentoAreaResponsavelProfessor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return null;
     }
 
     public static ArrayList<Requerimento> obterRequerimentoRequerenteProfessor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
+        Requerimento requerimento = new Requerimento();
+        try {
+
+            PreparedStatement query = con.prepareStatement(
+                    "SELECT * FROM SGR.REQUERIMENTOS R WHERE r.tipo_requerente = ? ;"
+            );
+            query.setString(1, "Professor");
+            rs = query.executeQuery();
+            while (rs.next()) {
+
+                requerimento.setRequerente(obterUsuarioPorID(rs.getInt("id_usuario")));
+                requerimento.setDataCriacao(rs.getString("data_criacao"));
+                requerimento.setDataSolucao(rs.getString("data_solucao"));
+                requerimento.setDescricao(rs.getString("descricao"));
+                requerimento.setNumeroRequerimento(rs.getString("numero_requerimento"));
+                requerimento.setResposta(rs.getString("resposta"));
+                requerimento.setStatus(rs.getString("status"));
+                requerimento.setTipoRequerimento(rs.getString("tipo_requerimento"));
+                listaRequerimento.add(requerimento);
+            }
+            ;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRequerimento;
     }
 
     public static ArrayList<Requerimento> obterRequerimentoRequerenteAluno() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
+        Requerimento requerimento = new Requerimento();
+        try {
+
+            PreparedStatement query = con.prepareStatement(
+                    "SELECT * FROM SGR.REQUERIMENTOS R WHERE r.tipo_requerente = ? ;"
+            );
+            query.setString(1, "Aluno");
+            rs = query.executeQuery();
+            while (rs.next()) {
+
+                requerimento.setRequerente(obterUsuarioPorID(rs.getInt("id_usuario")));
+                requerimento.setDataCriacao(rs.getString("data_criacao"));
+                requerimento.setDataSolucao(rs.getString("data_solucao"));
+                requerimento.setDescricao(rs.getString("descricao"));
+                requerimento.setNumeroRequerimento(rs.getString("numero_requerimento"));
+                requerimento.setResposta(rs.getString("resposta"));
+                requerimento.setStatus(rs.getString("status"));
+                requerimento.setTipoRequerimento(rs.getString("tipo_requerimento"));
+                listaRequerimento.add(requerimento);
+            }
+            ;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRequerimento;
+
     }
 
     public static ArrayList<Requerimento> obterRequerimentoFinalizado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
+        Requerimento requerimento = new Requerimento();
+        try {
+
+            PreparedStatement query = con.prepareStatement(
+                    "SELECT * FROM SGR.REQUERIMENTOS R WHERE R.status = ? OR R.status = ? ;"
+            );
+            query.setString(1, "REJEITADO");
+            query.setString(2, "CONCLUIDO");
+            rs = query.executeQuery();
+            while (rs.next()) {
+
+                requerimento.setRequerente(obterUsuarioPorID(rs.getInt("id_usuario")));
+                requerimento.setDataCriacao(rs.getString("data_criacao"));
+                requerimento.setDataSolucao(rs.getString("data_solucao"));
+                requerimento.setDescricao(rs.getString("descricao"));
+                requerimento.setNumeroRequerimento(rs.getString("numero_requerimento"));
+                requerimento.setResposta(rs.getString("resposta"));
+                requerimento.setStatus(rs.getString("status"));
+                requerimento.setTipoRequerimento(rs.getString("tipo_requerimento"));
+                listaRequerimento.add(requerimento);
+            }
+            ;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRequerimento;
+        
     }
 
     public static ArrayList<Requerimento> obterRequerimentoAreaResponsavelProfessorFinalizado(String cpf) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
+        Requerimento requerimento = new Requerimento();
+
+        try {
+            PreparedStatement query = con.prepareStatement(
+                    "SELECT * FROM SGR.REQUERIMENTOS R WHERE R.AREA_RESPONSAVEL = 0;"
+            );
+
+            rs = query.executeQuery();
+            while (rs.next()) {
+
+                requerimento.setRequerente(obterUsuarioPorID(rs.getInt("id_usuario")));
+                requerimento.setDataCriacao(rs.getString("data_criacao"));
+                requerimento.setDataSolucao(rs.getString("data_solucao"));
+                requerimento.setDescricao(rs.getString("descricao"));
+                requerimento.setNumeroRequerimento(rs.getString("numero_requerimento"));
+                requerimento.setResposta(rs.getString("resposta"));
+                requerimento.setStatus(rs.getString("status"));
+                requerimento.setTipoRequerimento(rs.getString("tipo_requerimento"));
+                listaRequerimento.add(requerimento);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRequerimento;
+    }
+
+    public static ArrayList<Requerimento> obterRequerimentosTriagem() {
+        ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
+        Requerimento requerimento = new Requerimento();
+        try {
+
+            PreparedStatement query = con.prepareStatement(
+                    "SELECT * FROM SGR.REQUERIMENTOS R WHERE R.status = ?;"
+            );
+            query.setString(1, "TRIAGEM");
+            
+            rs = query.executeQuery();
+            while (rs.next()) {
+
+                requerimento.setRequerente(obterUsuarioPorID(rs.getInt("id_usuario")));
+                requerimento.setDataCriacao(rs.getString("data_criacao"));
+                requerimento.setDataSolucao(rs.getString("data_solucao"));
+                requerimento.setDescricao(rs.getString("descricao"));
+                requerimento.setNumeroRequerimento(rs.getString("numero_requerimento"));
+                requerimento.setResposta(rs.getString("resposta"));
+                requerimento.setStatus(rs.getString("status"));
+                requerimento.setTipoRequerimento(rs.getString("tipo_requerimento"));
+                listaRequerimento.add(requerimento);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRequerimento;
+        
+    }
+
+    public static ArrayList<Requerimento> obterRequerimentoProtocolo(String numeroProtocolo) {
+    ArrayList<Requerimento> listaRequerimento = new ArrayList<>();
+        Requerimento requerimento = new Requerimento();
+        try {
+
+            PreparedStatement query = con.prepareStatement(
+                    "SELECT * FROM SGR.REQUERIMENTOS R WHERE R.numero_requerimento = ?;"
+            );
+            query.setString(1, numeroProtocolo);
+            
+            rs = query.executeQuery();
+            while (rs.next()) {
+
+                requerimento.setRequerente(obterUsuarioPorID(rs.getInt("id_usuario")));
+                requerimento.setDataCriacao(rs.getString("data_criacao"));
+                requerimento.setDataSolucao(rs.getString("data_solucao"));
+                requerimento.setDescricao(rs.getString("descricao"));
+                requerimento.setNumeroRequerimento(rs.getString("numero_requerimento"));
+                requerimento.setResposta(rs.getString("resposta"));
+                requerimento.setStatus(rs.getString("status"));
+                requerimento.setTipoRequerimento(rs.getString("tipo_requerimento"));
+                listaRequerimento.add(requerimento);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexaoBancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRequerimento;
     }
 
     public Tecnico obterTecnico(String cpf, String senha) {
